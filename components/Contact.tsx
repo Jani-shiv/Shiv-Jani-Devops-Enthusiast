@@ -50,10 +50,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="py-24 relative overflow-hidden bg-background">
-      {/* Background Decor */}
-      <div className="absolute top-1/4 -left-10 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-30 animate-pulse" />
-      <div className="absolute bottom-1/4 -right-10 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl opacity-30 animate-pulse delay-1000" />
-
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.div
           variants={containerVariants}
@@ -73,19 +69,7 @@ export default function Contact() {
               I&apos;m always excited to connect with fellow developers and visionaries. 
               Whether you have a project in mind or just want to chat about the latest in tech, 
               drop me a line! 
-              <motion.span
-                className="inline-block ml-2"
-                animate={{ rotate: [0, 14, -8, 14, -4, 10, 0] }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  repeatDelay: 1,
-                  ease: "easeInOut",
-                }}
-                style={{ originX: 0.7, originY: 0.7 }}
-              >
-                👋
-              </motion.span>
+              👋
             </p>
 
             <div className="flex justify-center lg:justify-start gap-5">
@@ -111,11 +95,8 @@ export default function Contact() {
 
           {/* Right Column: Glassmorphic Form */}
           <motion.div variants={itemVariants} className="w-full">
-             <div className="relative group">
-                {/* Glow effect underneath */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200" />
-                
-                <div className="relative p-8 rounded-2xl bg-secondary/30 backdrop-blur-xl border border-white/10 shadow-2xl">
+              <div className="relative">
+                <div className="relative p-8 rounded-2xl bg-secondary/30 border border-border shadow-2xl">
                   <h3 className="text-2xl font-semibold mb-6 text-foreground flex items-center gap-2">
                     <MessageSquare className="w-6 h-6 text-primary" />
                     Send a Message
@@ -139,7 +120,7 @@ export default function Contact() {
                           <CheckCircle size={40} />
                         </motion.div>
                         <h4 className="text-2xl font-bold text-foreground mb-2">Message Sent!</h4>
-                        <p className="text-muted-foreground">Thanks for reaching out. I'll get back to you soon.</p>
+                        <p className="text-muted-foreground">Thanks for reaching out. I&apos;ll get back to you soon.</p>
                       </motion.div>
                     ) : (
                       <motion.form
@@ -182,7 +163,7 @@ export default function Contact() {
                         <button
                           type="submit"
                           disabled={status === "loading"}
-                          className="w-full py-4 bg-gradient-to-r from-primary to-purple-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-primary/25 transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                          className="w-full py-4 bg-primary text-background font-bold rounded-xl hover:bg-primary/90 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                           {status === "loading" ? (
                             <span className="flex items-center gap-2">

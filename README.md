@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Shiv Jani | DevOps & Linux Engineer
 
-## Getting Started
+Welcome to my portfolio! I build and automate reliable, scalable systems using Linux, CI/CD, and cloud-native tools. Driven by "learning by doing" and documenting the journey via **DevOpsNi Diary**.
 
-First, run the development server:
+## 🛠️ Technical Arsenal
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Infrastructure**: Linux (RHEL/Ubuntu), Docker, Kubernetes, Terraform, Ansible.
+- **CI/CD**: GitHub Actions, Jenkins, GitLab CI.
+- **Cloud**: AWS (EC2, S3, VPC, Lambda), Azure.
+- **Monitoring**: Prometheus, Grafana, ELK Stack.
+- **Languages**: Bash, Python, JavaScript/React.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌟 Featured Projects
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### [Anti-Gravity DevOps](https://github.com/Jani-shiv/anti-gravity-devops)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+A self-healing, auto-scaling infrastructure demonstration using Docker and Kubernetes to resist system failures.
 
-## Learn More
+### [MyCycleCare](https://github.com/Jani-shiv/MyCycleCare)
 
-To learn more about Next.js, take a look at the following resources:
+AI-powered wellness tracker built with React/TSX, featuring symptom tracking and mood journaling.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### [RHCSA Study Guide](https://github.com/Jani-shiv/rhcsa-study-guide)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Interactive Linux study guide covering 17 essential topics for Red Hat certification preparation.
 
-## Deploy on Vercel
+## 🎓 Education & Certifications
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Gujarat University**: Bachelor's Degree
+- **Red Hat**: RHCSA (EX200) - _In Progress_
+- **AWS**: Solutions Architect - _Active Learning_
+- **CNCF**: CKA - _In Roadmap_
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔗 Connect With Me
+
+- **YouTube**: [DevOpsNi Diary](https://www.youtube.com/@devopsnidiary) - Documenting my learning journey.
+- **LinkedIn**: [Shiv Jani](https://www.linkedin.com/in/shiv-jani/)
+- **GitHub**: [Jani-shiv](https://github.com/Jani-shiv)
+
+---
+
+_Built with Next.js, Tailwind CSS, and Framer Motion. Focused on a clean, high-performance, and solid-color aesthetic._

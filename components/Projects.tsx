@@ -1,26 +1,43 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, GitBranch } from "lucide-react"
+import { Github, Server, Activity, FileText, Cpu, MessageSquare } from "lucide-react"
 
 const projects = [
   {
-    title: "Kubernetes GitOps Cluster",
-    description: "Automated K8s cluster bootstrap using ArgoCD and Terraform. Implemented strict security policies and monitoring stack with Prometheus/Grafana.",
-    tech: ["Kubernetes", "ArgoCD", "Terraform", "AWS"],
-    link: "https://github.com/Jani-shiv", // Placeholder
+    title: "Anti-Gravity DevOps",
+    description: "A self-healing, auto-scaling, fault-tolerant infrastructure demonstration. Built as a demonstration of resilient systems using Docker and Kubernetes.",
+    tech: ["Kubernetes", "Docker", "Grafana", "DevOps"],
+    link: "https://github.com/Jani-shiv/anti-gravity-devops",
+    icon: <Server size={24} />,
   },
   {
-    title: "Serverless CI/CD Pipeline",
-    description: "Built a highly scalable event-driven CI/CD pipeline using AWS Lambda and GitHub Actions Runners to reduce build costs by 40%.",
-    tech: ["AWS Lambda", "GitHub Actions", "Python", "Docker"],
-    link: "https://github.com/Jani-shiv",
+    title: "MyCycleCare",
+    description: "A TSX-based wellness and cycle care tracking app with mood journal, symptom tracker, and AI assistant for health monitoring.",
+    tech: ["React", "Typescript", "AI", "Wellness"],
+    link: "https://github.com/Jani-shiv/MyCycleCare",
+    icon: <Activity size={24} />,
   },
   {
-    title: "High-Availability Web Server",
-    description: "Deployed a fault-tolerant Nginx web server cluster on Linux with automated failover and load balancing configured via Ansible.",
-    tech: ["Linux", "Nginx", "Ansible", "Bash"],
-    link: "https://github.com/Jani-shiv",
+    title: "RHCSA Study Guide",
+    description: "Interactive web-based study guide for Red Hat Certified System Administrator exam, covering 17 essential Linux topics with hands-on examples.",
+    tech: ["Linux", "RedHat", "SysAdmin", "RHEL"],
+    link: "https://github.com/Jani-shiv/rhcsa-study-guide",
+    icon: <FileText size={24} />,
+  },
+  {
+    title: "TechInnovate",
+    description: "AI-powered innovation platform showcasing smart tools, automation workflows, and next-gen tech products built with modern frameworks.",
+    tech: ["Next.js", "React", "Tailwind", "AI"],
+    link: "https://github.com/Jani-shiv/TechInnovate",
+    icon: <Cpu size={24} />,
+  },
+  {
+    title: "AI Meeting Tracker",
+    description: "Corporate meeting minutes tracker using AI for summaries, decisions, and PDF exports. Powered by NLP and Flask.",
+    tech: ["Python", "Flask", "NLP", "AI"],
+    link: "https://github.com/Jani-shiv/AI-Powered-Corporate-Meeting-Minutes-Action-Tracker",
+    icon: <MessageSquare size={24} />,
   },
 ]
 
@@ -65,12 +82,12 @@ export default function Projects() {
                 key={index}
                 variants={item}
                 whileHover={{ y: -8 }}
-                className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-primary/10 transition-all group flex flex-col"
+                className="bg-card border border-border rounded-xl overflow-hidden transition-all group flex flex-col"
               >
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-3 bg-secondary rounded-lg text-primary">
-                      <GitBranch size={24} />
+                      {project.icon}
                     </div>
                     <div className="flex gap-4">
                       <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">

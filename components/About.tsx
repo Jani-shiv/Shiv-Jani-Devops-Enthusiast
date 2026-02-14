@@ -53,7 +53,7 @@ export default function About() {
                 </div>
 
                 <div className="mt-4">
-                  <span className="text-accent">shiv@linux:~$</span> <span className="animate-pulse">_</span>
+                  <span className="text-accent">shiv@linux:~$</span> <span>_</span>
                 </div>
               </div>
             </div>

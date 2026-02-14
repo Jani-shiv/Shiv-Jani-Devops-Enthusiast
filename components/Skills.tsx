@@ -54,9 +54,6 @@ const item = {
 export default function Skills() {
   return (
     <section id="skills" className="py-20 bg-background relative overflow-hidden">
-       {/* Background Decoration */}
-       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[300px] h-[300px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
-
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -80,7 +77,7 @@ export default function Skills() {
                 key={index}
                 variants={item}
                 whileHover={{ y: -5, borderColor: "var(--color-primary)" }}
-                className="bg-card border border-border p-6 rounded-lg transition-colors group shadow-lg shadow-transparent hover:shadow-primary/5"
+                className="bg-card border border-border p-6 rounded-lg transition-colors group"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-primary/10 rounded-md group-hover:bg-primary/20 transition-colors">
