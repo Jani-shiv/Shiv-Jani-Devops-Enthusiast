@@ -39,4 +39,12 @@ Interactive Linux study guide covering 17 essential topics for Red Hat certifica
 
 ---
 
-_Built with Next.js, Tailwind CSS, and Framer Motion. Focused on a clean, high-performance, and solid-color aesthetic._
+## 🚀 Features
+
+- **Cinematic Welcome Screen**: A maximize, animated entry experience.
+- **Floating Island Navigation**: Glassmorphic navbar for seamless navigation.
+- **Smooth Scrolling**: Integrated `lenis` for a premium feel.
+- **Interactive Elements**: Marquees, 3D-style icons, and typing effects.
+- **Responsive Design**: Fully optimized for all devices.
+
+_Built with Next.js 15, Tailwind CSS, Framer Motion, and Lenis._
