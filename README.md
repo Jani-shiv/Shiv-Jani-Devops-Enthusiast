@@ -1,3 +1,5 @@
+![Visitor Count](https://profile-counter.glitch.me/Jani-shiv/count.svg)
+
 # 🚀 Shiv Jani | DevOps & Linux Engineer
 
 Welcome to my portfolio! I build and automate reliable, scalable systems using Linux, CI/CD, and cloud-native tools. Driven by "learning by doing" and documenting the journey via **DevOpsNi Diary**.
