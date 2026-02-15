@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -12,25 +11,40 @@ export async function POST(request: Request) {
       );
     }
 
-    // --- WhatsApp Integration Logic (Server-Side) ---
-    // TO ACTUALLY SEND MESSAGES, YOU NEED A PROVIDER LIKE TWILIO OR META API.
+    // --- FormSubmit.co Integration (Free, No Key Required) ---
+    // This will forward the form data directly to shivjani2005@gmail.com
+    // NOTE: The FIRST time you use this, you will receive an activation email from FormSubmit.
+    // You MUST click the activation link in that email for it to work.
     
-    // Example using Twilio (Requires 'twilio' package and env vars):
-    /*
-    const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    await client.messages.create({
-       body: `New Access Request from ${name}: ${message}`,
-       from: 'whatsapp:+14155238886', // Your Twilio Sandbox Number
-       to: 'whatsapp:+918160308850'   // Your Number
+    const TARGET_EMAIL = "shivjani2005@gmail.com";
+    
+    const response = await fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        message: message,
+        _subject: `New Portfolio Message from ${name}`,
+        _template: "table",
+        _captcha: "false"
+      }),
     });
-    */
 
-    // FOR NOW: Log to server console to simulate sending
-    console.log(`[WhatsApp Mock] Sending message to +918160308850`);
-    console.log(`[WhatsApp Mock] From: ${name}`);
-    console.log(`[WhatsApp Mock] Message: ${message}`);
+    const result = await response.json();
+    console.log("FormSubmit API Response:", result); // DEBUG LOG
 
-    return NextResponse.json({ success: true, message: 'Message sent successfully!' });
+    if (response.ok) {
+      return NextResponse.json({ success: true, message: 'Message sent successfully!' });
+    } else {
+      console.error('FormSubmit Error:', result);
+      return NextResponse.json(
+        { error: 'Failed to send message', details: result },
+        { status: 502 }
+      );
+    }
 
   } catch (error) {
     console.error('Error processing contact form:', error);

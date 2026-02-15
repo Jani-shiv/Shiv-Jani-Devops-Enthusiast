@@ -8,6 +8,7 @@ const Typewriter = ({ text, delay = 0 }: { text: string; delay?: number }) => {
   const [currentText, setCurrentText] = useState("")
 
   useEffect(() => {
+    setCurrentText("") // Reset on effect run to avoid Strict Mode duplication
     const timeout = setTimeout(() => {
       let i = 0
       const timer = setInterval(() => {

@@ -8,6 +8,7 @@ import Content from "@/components/Content"
 import Contact from "@/components/Contact"
 import Marquee from "@/components/Marquee"
 import EventsGallery from "@/components/EventsGallery"
+import SnakeGame from "@/components/SnakeGame"
 import { Terminal, Activity, Server, Cloud, Cpu } from "lucide-react"
 
 export default function Home() {
@@ -47,6 +48,7 @@ export default function Home() {
       </Marquee>
 
       <Contact />
+      <SnakeGame />
     </>
   )
 }

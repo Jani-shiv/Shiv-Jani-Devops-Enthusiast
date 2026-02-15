@@ -7,9 +7,10 @@ export default function Education() {
   const academic = [
     {
       institution: "Gujarat University",
-      degree: "Bachelor's Degree",
-      period: "Graduated",
+      degree: "BSc IT (Cloud & Web Application Development)",
+      period: "3rd Year (Sem 6)",
       location: "Ahmedabad, India",
+      gpa: "CGPA: 8.3"
     },
   ]
 
@@ -64,7 +65,10 @@ export default function Education() {
                     <span className="text-xs font-mono text-muted-foreground bg-secondary px-2 py-1 rounded">{edu.period}</span>
                   </div>
                   <p className="text-foreground font-medium">{edu.degree}</p>
-                  <p className="text-sm text-muted-foreground mt-1">{edu.location}</p>
+                  <div className="flex justify-between items-center mt-2">
+                    <p className="text-sm text-muted-foreground">{edu.location}</p>
+                    {edu.gpa && <span className="text-sm font-bold text-primary/90 bg-primary/10 px-2 py-0.5 rounded">{edu.gpa}</span>}
+                  </div>
                 </div>
               ))}
 

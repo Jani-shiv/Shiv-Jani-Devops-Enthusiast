@@ -14,13 +14,24 @@ export default function Contact() {
     setStatus("loading")
 
     try {
-      const response = await fetch("/api/contact", {
+      // Direct client-side submission to FormSubmit.co
+      // This is often more reliable for the initial activation than a server proxy
+      const response = await fetch("https://formsubmit.co/ajax/shivjani2005@gmail.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json"
         },
-        body: JSON.stringify({ name, message }),
+        body: JSON.stringify({ 
+          name, 
+          message,
+          _subject: `Portfolio Message from ${name}`,
+          _template: "table",
+          _captcha: "false" 
+        }),
       })
+
+      const result = await response.json();
 
       if (response.ok) {
         setStatus("success")
@@ -28,6 +39,7 @@ export default function Contact() {
         setMessage("")
         setTimeout(() => setStatus("idle"), 5000)
       } else {
+        console.error("FormSubmit Error:", result)
         setStatus("error")
         setTimeout(() => setStatus("idle"), 3000)
       }
