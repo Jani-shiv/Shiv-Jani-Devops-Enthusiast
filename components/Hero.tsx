@@ -51,7 +51,7 @@ export default function Hero() {
             Shiv Jani
           </h1>
           <h2 className="text-2xl md:text-3xl font-medium text-muted-foreground">
-            DevOps Engineer <span className="text-primary">|</span> Linux Practitioner
+            DevOps Enthusiast <span className="text-primary">|</span> Linux Practitioner
           </h2>
         </motion.div>
 

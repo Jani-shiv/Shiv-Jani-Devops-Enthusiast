@@ -7,9 +7,11 @@ import { cn } from "@/lib/utils"
 
 const navLinks = [
   { name: "About", href: "#about" },
+  { name: "Education", href: "#education" },
   { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
   { name: "Experience", href: "#experience" },
+  { name: "Projects", href: "#projects" },
+  { name: "Content", href: "#content" },
   { name: "Contact", href: "#contact" },
 ]
 
@@ -46,7 +48,7 @@ export default function Navbar() {
               href={link.href}
               className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
             >
-              <span className="text-primary/60 font-mono mr-1">0{navLinks.indexOf(link) + 1}.</span>
+              <span className="text-primary/60 font-mono mr-1">{String(navLinks.indexOf(link) + 1).padStart(2, '0')}.</span>
               {link.name}
             </a>
           ))}
@@ -79,7 +81,7 @@ export default function Navbar() {
                   className="text-base font-medium text-foreground hover:text-primary transition-colors py-2 block"
                   onClick={() => setIsOpen(false)}
                 >
-                  <span className="text-primary font-mono mr-2">0{navLinks.indexOf(link) + 1}.</span>
+                  <span className="text-primary font-mono mr-2">{String(navLinks.indexOf(link) + 1).padStart(2, '0')}.</span>
                   {link.name}
                 </a>
               ))}

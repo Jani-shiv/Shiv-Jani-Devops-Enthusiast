@@ -31,8 +31,8 @@ export default function Content() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-4 text-foreground">
-            Learning in Public
+          <h2 className="text-3xl font-bold mb-4 text-foreground flex items-center justify-center gap-2">
+            <span className="text-primary">06.</span> Learning in Public
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             I believe the best way to master a concept is to teach it. Check out my

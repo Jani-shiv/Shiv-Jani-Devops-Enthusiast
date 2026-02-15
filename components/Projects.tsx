@@ -67,7 +67,7 @@ export default function Projects() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl font-bold mb-12 text-foreground flex items-center gap-2">
-            <span className="text-primary">03.</span> Featured Projects
+            <span className="text-primary">05.</span> Featured Projects
           </h2>
 
           <motion.div 

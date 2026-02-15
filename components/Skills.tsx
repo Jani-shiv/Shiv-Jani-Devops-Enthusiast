@@ -62,7 +62,7 @@ export default function Skills() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl font-bold mb-12 text-foreground flex items-center gap-2">
-            <span className="text-primary">02.</span> Technical Arsenal
+            <span className="text-primary">03.</span> Technical Arsenal
           </h2>
 
           <motion.div 
