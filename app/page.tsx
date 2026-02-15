@@ -1,3 +1,7 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { AnimatePresence } from "framer-motion"
 import Hero from "@/components/Hero"
 import About from "@/components/About"
 import Education from "@/components/Education"
@@ -10,11 +14,31 @@ import Contact from "@/components/Contact"
 import Marquee from "@/components/Marquee"
 import EventsGallery from "@/components/EventsGallery"
 import SnakeGame from "@/components/SnakeGame"
+import WelcomeScreen from "@/components/WelcomeScreen"
 import { Terminal, Activity, Server, Cloud, Cpu } from "lucide-react"
 
 export default function Home() {
+  const [showWelcome, setShowWelcome] = useState(true)
+
+  useEffect(() => {
+    // Check if user has already visited in this session
+    const hasVisited = sessionStorage.getItem("hasVisited")
+    if (hasVisited) {
+      setShowWelcome(false)
+    }
+  }, [])
+
+  const handleEnter = () => {
+    setShowWelcome(false)
+    sessionStorage.setItem("hasVisited", "true")
+  }
+
   return (
     <>
+      <AnimatePresence>
+        {showWelcome && <WelcomeScreen onEnter={handleEnter} />}
+      </AnimatePresence>
+
       <Hero />
       
       <Marquee className="bg-primary text-background py-4 font-bold text-lg uppercase tracking-widest border-y border-primary/20 shadow-[0_0_20px_rgba(var(--color-primary),0.3)]">
