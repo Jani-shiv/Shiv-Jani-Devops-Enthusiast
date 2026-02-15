@@ -104,42 +104,34 @@ export default function Community() {
               </div>
             </motion.div>
           </div>
+        </motion.div>
+      </div>
 
-          {/* Active Communities Marquee */}
-          <motion.div
+       {/* Active Communities Marquee - Full Width */}
+       <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
+            className="w-full"
           >
             <div className="flex items-center justify-center gap-3 mb-8">
               <Users size={24} className="text-primary" />
-              <h3 className="text-xl font-bold text-foreground">Active Community Member</h3>
+              <h3 className="text-xl font-bold text-foreground">Active Community Member & Volunteer</h3>
             </div>
             
-            <div className="relative">
-                <div className="absolute left-0 top-0 bottom-0 w-20 bg-linear-to-r from-background to-transparent z-10" />
-                <div className="absolute right-0 top-0 bottom-0 w-20 bg-linear-to-l from-background to-transparent z-10" />
-                
-                <Marquee speed={40} className="py-4">
-                    <div className="flex gap-4 px-4">
-                        {communities.map((item, index) => (
-                            <div
-                            key={index}
-                            className="flex items-center gap-3 px-6 py-3 rounded-full bg-primary/5 border border-primary/20 backdrop-blur-sm hover:border-primary hover:bg-primary/10 transition-all duration-300 group cursor-default shadow-[0_0_10px_rgba(var(--color-primary),0.1)] hover:shadow-[0_0_20px_rgba(var(--color-primary),0.3)]"
-                            >
-                                <item.icon size={18} className="text-primary group-hover:scale-110 transition-transform duration-300" />
-                                <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors whitespace-nowrap uppercase tracking-wide">
-                                    {item.name}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </Marquee>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
+            <Marquee speed={40} className="bg-primary text-background py-4 font-bold text-lg uppercase tracking-widest border-y border-primary/20 shadow-[0_0_20px_rgba(var(--color-primary),0.3)]">
+                 <div className="flex items-center gap-8 px-4">
+                    {communities.map((item, index) => (
+                        <div key={index} className="flex items-center gap-4">
+                            <item.icon size={24} className="text-background" />
+                            <span>{item.name}</span>
+                            <span className="text-background/50">|</span>
+                        </div>
+                    ))}
+                </div>
+            </Marquee>
+       </motion.div>
     </section>
   )
 }
