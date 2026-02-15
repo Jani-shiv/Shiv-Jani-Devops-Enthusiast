@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Youtube, Linkedin, BookOpen } from "lucide-react"
+import { Youtube, Linkedin, BookOpen, Github } from "lucide-react"
 
 const contentLinks = [
   {
@@ -18,12 +18,19 @@ const contentLinks = [
     link: "https://www.linkedin.com/in/shiv-jani/", 
     action: "Read Posts",
   },
+  {
+    title: "GitHub - Open Source",
+    description: "Building tools, contributing to open source, and sharing code.",
+    icon: <Github className="w-6 h-6 text-foreground" />,
+    link: "https://github.com/Start-With-Shiv", 
+    action: "View Profile",
+  },
 ]
 
 export default function Content() {
   return (
     <section id="content" className="py-20 bg-muted/30">
-      <div className="max-w-5xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -41,7 +48,7 @@ export default function Content() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {contentLinks.map((item, index) => (
             <motion.div
               key={index}
