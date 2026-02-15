@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Trophy, RefreshCw, Terminal, Gamepad2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
+import { X, Trophy, RefreshCw, Terminal, Gamepad2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Play, Pause, Square } from "lucide-react"
 
 type Point = { x: number; y: number }
 type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT"
+type GameState = "MENU" | "PLAYING" | "PAUSED" | "GAME_OVER"
 
 const GRID_SIZE = 20
 const CELL_SIZE = 20
@@ -13,21 +14,20 @@ const INITIAL_SPEED = 150
 
 export default function SnakeGame() {
   const [isOpen, setIsOpen] = useState(false)
+  const [gameState, setGameState] = useState<GameState>("MENU")
   const [snake, setSnake] = useState<Point[]>([{ x: 10, y: 10 }])
   const [food, setFood] = useState<Point>({ x: 15, y: 15 })
   const [direction, setDirection] = useState<Direction>("RIGHT")
-  const [isGameOver, setIsGameOver] = useState(false)
   const [score, setScore] = useState(0)
   const [highScore, setHighScore] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
   const directionRef = useRef<Direction>("RIGHT")
   const gameLoopRef = useRef<NodeJS.Timeout>(null)
   const [speed, setSpeed] = useState(INITIAL_SPEED)
-
+  
   // Load High Score
   useEffect(() => {
-    const saved = localStorage.getItem("snakeHighScore")
-    if (saved) setHighScore(parseInt(saved))
+    const savedScore = localStorage.getItem("snakeHighScore")
+    if (savedScore) setHighScore(parseInt(savedScore))
   }, [])
 
   // Generate random food
@@ -48,21 +48,40 @@ export default function SnakeGame() {
     })
   }, [])
 
-  const resetGame = () => {
+  const startGame = () => {
     setSnake([{ x: 10, y: 10 }])
     setFood(generateFood())
     setDirection("RIGHT")
     directionRef.current = "RIGHT"
     setScore(0)
     setSpeed(INITIAL_SPEED)
-    setIsGameOver(false)
-    setIsPaused(false)
+    setGameState("PLAYING")
+  }
+  
+  const pauseGame = useCallback(() => {
+      setGameState((prev) => {
+          if (prev === "PLAYING") return "PAUSED"
+          if (prev === "PAUSED") return "PLAYING"
+          return prev
+      })
+  }, [])
+  
+  const stopGame = () => {
+      setGameState("MENU")
   }
 
   // Handle Input
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return
+      
+      // Game Controls via Keyboard
+      if (e.key === " " && (gameState === "PLAYING" || gameState === "PAUSED")) {
+          pauseGame()
+          return
+      }
+      
+      if (gameState !== "PLAYING") return
       
       switch (e.key) {
         case "ArrowUp":
@@ -81,18 +100,15 @@ export default function SnakeGame() {
         case "d":
           if (directionRef.current !== "LEFT") setDirection("RIGHT")
           break
-        case "Escape":
-            setIsOpen(false)
-            break
       }
     }
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isOpen])
+  }, [isOpen, gameState, pauseGame])
 
   // Game Loop
   useEffect(() => {
-    if (!isOpen || isGameOver || isPaused) return
+    if (!isOpen || gameState !== "PLAYING") return
 
     gameLoopRef.current = setInterval(() => {
       setSnake((prevSnake) => {
@@ -115,15 +131,15 @@ export default function SnakeGame() {
           newHead.y < 0 ||
           newHead.y >= GRID_SIZE
         ) {
-          setIsGameOver(true)
-          updateHighScore(score) // Update high score on game over
+          setGameState("GAME_OVER")
+          updateHighScore(score)
           return prevSnake
         }
 
         // Check Collision with Self
         if (prevSnake.some((segment) => segment.x === newHead.x && segment.y === newHead.y)) {
-          setIsGameOver(true)
-          updateHighScore(score) // Update high score on game over
+          setGameState("GAME_OVER")
+          updateHighScore(score)
           return prevSnake
         }
 
@@ -147,7 +163,7 @@ export default function SnakeGame() {
     return () => {
       if (gameLoopRef.current) clearInterval(gameLoopRef.current)
     }
-  }, [isOpen, isGameOver, isPaused, direction, food, speed, generateFood, score, updateHighScore])
+  }, [isOpen, gameState, direction, food, speed, generateFood, score, updateHighScore])
 
 
   return (
@@ -158,7 +174,7 @@ export default function SnakeGame() {
         animate={{ scale: 1, opacity: 1 }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        onClick={() => { setIsOpen(true); resetGame(); }}
+        onClick={() => { setIsOpen(true); setGameState("MENU"); }}
         className="fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-3 bg-primary text-background rounded-full font-bold shadow-[0_0_20px_rgba(var(--color-primary),0.4)] border-2 border-primary/50 hover:bg-primary/90 transition-all animate-bounce"
         style={{ zIndex: 9999 }} // Force top z-index
       >
@@ -179,7 +195,7 @@ export default function SnakeGame() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-[#0c0c0c] border border-primary/30 w-full max-w-md rounded-xl overflow-hidden shadow-2xl relative flex flex-col"
+              className="bg-[#0c0c0c] border border-primary/30 w-full max-w-md rounded-xl overflow-hidden shadow-2xl relative flex flex-col min-h-[500px]"
             >
               {/* Terminal Header */}
               <div className="bg-secondary/20 p-3 border-b border-primary/20 flex items-center justify-between">
@@ -187,115 +203,172 @@ export default function SnakeGame() {
                   <Terminal size={16} />
                   <span>snake_game.exe</span>
                 </div>
-                <button 
-                    onClick={() => setIsOpen(false)}
-                    className="text-muted-foreground hover:text-red-500 transition-colors"
-                >
-                  <X size={20} />
-                </button>
+                <div className="flex items-center gap-2">
+                    <button 
+                        onClick={() => setIsOpen(false)}
+                        className="text-muted-foreground hover:text-red-500 transition-colors ml-2"
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
               </div>
 
-              {/* Game Area */}
-              <div className="p-4 flex flex-col items-center gap-4 relative">
-                
-                {/* Score Board */}
-                <div className="flex justify-between w-full font-mono text-sm text-primary/80 px-2">
-                    <div className="flex items-center gap-2">
-                        <span>SCORE: {score}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-yellow-500">
-                        <Trophy size={14} />
-                        <span>HIGH: {highScore}</span>
-                    </div>
-                </div>
+              {/* MENU VIEW */}
+              {gameState === "MENU" && (
+                 <div className="p-6 flex flex-col items-center justify-center h-full font-mono space-y-8 absolute inset-0">
+                     <div className="text-center space-y-2">
+                        <Gamepad2 size={64} className="text-primary mx-auto mb-4" />
+                        <h2 className="text-3xl font-bold text-foreground tracking-tighter">SNAKE.EXE</h2>
+                        <p className="text-muted-foreground text-sm">Retro Terminal Edition</p>
+                     </div>
+                     
+                     <div className="bg-secondary/10 border border-primary/20 p-4 rounded text-center w-full max-w-xs">
+                         <div className="text-muted-foreground text-xs flex items-center justify-center gap-1 mb-1">
+                             <Trophy size={12} /> Local High Score
+                         </div>
+                         <div className="text-4xl font-bold text-yellow-500">{highScore}</div>
+                     </div>
+                     
+                     <button 
+                         onClick={startGame}
+                         className="px-8 py-3 bg-primary text-background font-bold rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2 text-lg shadow-[0_0_15px_rgba(var(--color-primary),0.4)] animate-pulse"
+                     >
+                         <Play size={20} fill="currentColor" />
+                         START GAME
+                     </button>
+                 </div>
+              )}
 
-                {/* Grid */}
-                <div 
-                    className="relative bg-black/50 border-2 border-primary/20 rounded shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]"
-                    style={{ 
-                        width: GRID_SIZE * CELL_SIZE, 
-                        height: GRID_SIZE * CELL_SIZE 
-                    }}
-                >
-                    {/* Snake */}
-                    {snake.map((segment, i) => (
+              {/* GAME VIEW */}
+              {(gameState === "PLAYING" || gameState === "PAUSED" || gameState === "GAME_OVER") && (
+                  <div className="p-4 flex flex-col items-center gap-4 relative h-full justify-center">
+                    
+                    {/* Score Board */}
+                    <div className="flex justify-between w-full font-mono text-sm text-primary/80 px-2 absolute top-4 left-0 right-0">
+                        <div className="flex items-center gap-2 ml-4">
+                            <span>SCORE: {score}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-yellow-500 mr-4">
+                            <Trophy size={14} />
+                            <span>HIGH: {highScore}</span>
+                        </div>
+                    </div>
+                    
+                    {/* Controls Header */}
+                     <div className="absolute top-4 right-1/2 translate-x-1/2 flex gap-2">
+                         {gameState === "PLAYING" && (
+                             <button onClick={pauseGame} className="text-yellow-500 hover:text-yellow-400 p-1 bg-black/50 rounded" title="Pause">
+                                 <Pause size={16} />
+                             </button>
+                         )}
+                         {gameState === "PAUSED" && (
+                             <button onClick={pauseGame} className="text-green-500 hover:text-green-400 p-1 bg-black/50 rounded" title="Resume">
+                                 <Play size={16} />
+                             </button>
+                         )}
+                         <button onClick={stopGame} className="text-red-500 hover:text-red-400 p-1 bg-black/50 rounded" title="Exit">
+                             <Square size={16} fill="currentColor" />
+                         </button>
+                     </div>
+
+                    {/* Grid */}
+                    <div 
+                        className="relative bg-black/50 border-2 border-primary/20 rounded shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] mt-8"
+                        style={{ 
+                            width: GRID_SIZE * CELL_SIZE, 
+                            height: GRID_SIZE * CELL_SIZE 
+                        }}
+                    >
+                        {/* Snake */}
+                        {snake.map((segment, i) => (
+                            <div
+                                key={i}
+                                className="absolute bg-primary"
+                                style={{
+                                    width: CELL_SIZE - 2,
+                                    height: CELL_SIZE - 2,
+                                    left: segment.x * CELL_SIZE + 1,
+                                    top: segment.y * CELL_SIZE + 1,
+                                    borderRadius: i === 0 ? '4px' : '2px', // Head vs Body
+                                    opacity: i === 0 ? 1 : 0.7
+                                }}
+                            />
+                        ))}
+
+                        {/* Food */}
                         <div
-                            key={i}
-                            className="absolute bg-primary"
+                            className="absolute bg-red-500 animate-pulse rounded-full"
                             style={{
-                                width: CELL_SIZE - 2,
-                                height: CELL_SIZE - 2,
-                                left: segment.x * CELL_SIZE + 1,
-                                top: segment.y * CELL_SIZE + 1,
-                                borderRadius: i === 0 ? '4px' : '2px', // Head vs Body
-                                opacity: i === 0 ? 1 : 0.7
+                                width: CELL_SIZE - 4,
+                                height: CELL_SIZE - 4,
+                                left: food.x * CELL_SIZE + 2,
+                                top: food.y * CELL_SIZE + 2,
+                                boxShadow: "0 0 10px rgba(239, 68, 68, 0.6)"
                             }}
                         />
-                    ))}
+                        
+                        {/* Pause Overlay */}
+                        {gameState === "PAUSED" && (
+                            <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px] flex items-center justify-center">
+                                <span className="text-primary font-bold text-xl tracking-widest">PAUSED</span>
+                            </div>
+                        )}
 
-                    {/* Food */}
-                    <div
-                        className="absolute bg-red-500 animate-pulse rounded-full"
-                        style={{
-                            width: CELL_SIZE - 4,
-                            height: CELL_SIZE - 4,
-                            left: food.x * CELL_SIZE + 2,
-                            top: food.y * CELL_SIZE + 2,
-                            boxShadow: "0 0 10px rgba(239, 68, 68, 0.6)"
-                        }}
-                    />
+                        {/* Game Over Overlay */}
+                        {gameState === "GAME_OVER" && (
+                            <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-center p-4 z-10">
+                                <h3 className="text-2xl font-bold text-red-500 mb-2 font-mono">GAME OVER</h3>
+                                <div className="text-4xl font-bold text-white mb-6">Score: {score}</div>
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={stopGame}
+                                        className="px-6 py-2 bg-secondary text-foreground font-bold rounded hover:bg-secondary/80 transition-colors"
+                                    >
+                                        MENU
+                                    </button>
+                                    <button
+                                        onClick={startGame}
+                                        className="flex items-center gap-2 px-6 py-2 bg-primary text-background font-bold rounded hover:bg-primary/90 transition-colors"
+                                    >
+                                        <RefreshCw size={18} />
+                                        RETRY
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
 
-                    {/* Game Over Overlay */}
-                    {isGameOver && (
-                        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-center p-4">
-                            <h3 className="text-2xl font-bold text-red-500 mb-2 font-mono">GAME OVER</h3>
-                            <p className="text-muted-foreground text-sm mb-4">You crashed!</p>
-                            <button
-                                onClick={resetGame}
-                                className="flex items-center gap-2 px-4 py-2 bg-primary text-background font-bold rounded hover:bg-primary/90 transition-colors"
-                            >
-                                <RefreshCw size={16} />
-                                Try Again
-                            </button>
-                        </div>
-                    )}
-                </div>
-
-                {/* Mobile Controls */}
-                <div className="grid grid-cols-3 gap-2 mt-2 md:hidden">
-                    <div />
-                    <button 
-                        className="p-3 bg-secondary/20 rounded-lg active:bg-primary/30"
-                        onClick={() => { if (directionRef.current !== "DOWN") setDirection("UP") }}
-                    >
-                        <ChevronUp className="text-primary" />
-                    </button>
-                    <div />
-                    <button 
-                        className="p-3 bg-secondary/20 rounded-lg active:bg-primary/30"
-                        onClick={() => { if (directionRef.current !== "RIGHT") setDirection("LEFT") }}
-                    >
-                        <ChevronLeft className="text-primary" />
-                    </button>
-                     <button 
-                        className="p-3 bg-secondary/20 rounded-lg active:bg-primary/30"
-                        onClick={() => { if (directionRef.current !== "UP") setDirection("DOWN") }}
-                    >
-                        <ChevronDown className="text-primary" />
-                    </button>
-                    <button 
-                        className="p-3 bg-secondary/20 rounded-lg active:bg-primary/30"
-                        onClick={() => { if (directionRef.current !== "LEFT") setDirection("RIGHT") }}
-                    >
-                        <ChevronRight className="text-primary" />
-                    </button>
-                </div>
-                
-                <p className="text-[10px] text-muted-foreground font-mono hidden md:block">
-                    Use ARROW KEYS or WASD to move
-                </p>
-
-              </div>
+                    {/* Mobile Controls */}
+                    <div className="grid grid-cols-3 gap-2 mt-2 md:hidden">
+                        <div />
+                        <button 
+                            className="p-3 bg-secondary/20 rounded-lg active:bg-primary/30"
+                            onClick={() => { if (directionRef.current !== "DOWN") setDirection("UP") }}
+                        >
+                            <ChevronUp className="text-primary" />
+                        </button>
+                        <div />
+                        <button 
+                            className="p-3 bg-secondary/20 rounded-lg active:bg-primary/30"
+                            onClick={() => { if (directionRef.current !== "RIGHT") setDirection("LEFT") }}
+                        >
+                            <ChevronLeft className="text-primary" />
+                        </button>
+                         <button 
+                            className="p-3 bg-secondary/20 rounded-lg active:bg-primary/30"
+                            onClick={() => { if (directionRef.current !== "UP") setDirection("DOWN") }}
+                        >
+                            <ChevronDown className="text-primary" />
+                        </button>
+                        <button 
+                            className="p-3 bg-secondary/20 rounded-lg active:bg-primary/30"
+                            onClick={() => { if (directionRef.current !== "LEFT") setDirection("RIGHT") }}
+                        >
+                            <ChevronRight className="text-primary" />
+                        </button>
+                    </div>
+                  </div>
+              )}
             </motion.div>
           </motion.div>
         )}

@@ -1,8 +1,31 @@
 "use client"
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Mail, Github, Linkedin, Send, User, MessageSquare, CheckCircle, AlertCircle } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { motion, AnimatePresence, useInView, animate } from "framer-motion"
+import { Mail, Github, Linkedin, Send, User, MessageSquare, CheckCircle, AlertCircle, Youtube, Activity } from "lucide-react"
+
+const AnimatedCounter = ({ value, suffix = "" }: { value: number, suffix?: string }) => {
+  const ref = useRef<HTMLSpanElement>(null)
+  const inView = useInView(ref, { once: true })
+
+  useEffect(() => {
+    if (inView && ref.current) {
+      ref.current.textContent = "0" + suffix
+      const controls = animate(0, value, {
+        duration: 2,
+        ease: "easeOut",
+        onUpdate(latest) {
+          if (ref.current) {
+            ref.current.textContent = Math.floor(latest).toLocaleString() + suffix
+          }
+        }
+      })
+      return () => controls.stop()
+    }
+  }, [inView, value, suffix])
+
+  return <span ref={ref} />
+}
 
 export default function Contact() {
   const [name, setName] = useState("")
@@ -15,7 +38,6 @@ export default function Contact() {
 
     try {
       // Direct client-side submission to FormSubmit.co
-      // This is often more reliable for the initial activation than a server proxy
       const response = await fetch("https://formsubmit.co/ajax/shivjani2005@gmail.com", {
         method: "POST",
         headers: {
@@ -84,11 +106,37 @@ export default function Contact() {
               👋
             </p>
 
+            {/* Social Stats Grid */}
+            <div className="grid grid-cols-2 gap-4 mb-8 max-w-lg mx-auto lg:mx-0">
+               {[
+                 { label: "LinkedIn", value: 2000, suffix: "+", icon: <Linkedin size={16} className="text-blue-500" />, desc: "Connections" },
+                 { label: "GitHub", value: 1500, suffix: "+", icon: <Github size={16} className="text-purple-500" />, desc: "Monthly Visitors" },
+                 { label: "YouTube", value: 30000, suffix: "+", icon: <Youtube size={16} className="text-red-500" />, desc: "Total Views" },
+                 { label: "Portfolio", value: 1000, suffix: "+", icon: <Activity size={16} className="text-green-500" />, desc: "Live Visits" },
+               ].map((stat, i) => (
+                 <motion.div 
+                    key={i}
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-secondary/20 border border-primary/10 p-4 rounded-xl flex flex-col items-center lg:items-start transition-colors hover:bg-secondary/40 hover:border-primary/30"
+                 >
+                    <div className="flex items-center gap-2 text-muted-foreground text-xs font-mono mb-1">
+                      {stat.icon}
+                      {stat.label}
+                    </div>
+                    <div className="text-2xl font-bold text-foreground">
+                        <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                    </div>
+                    <div className="text-xs text-muted-foreground/60">{stat.desc}</div>
+                 </motion.div>
+               ))}
+            </div>
+
             <div className="flex justify-center lg:justify-start gap-5">
               {[
                 { icon: <Github size={22} />, href: "https://github.com/Jani-shiv", label: "GitHub" },
                 { icon: <Linkedin size={22} />, href: "https://www.linkedin.com/in/shiv-jani/", label: "LinkedIn" },
-                { icon: <Mail size={22} />, href: "mailto:contact@shivjani.com", label: "Email" },
+                { icon: <Mail size={22} />, href: "mailto:shivjani2005@gmail.com", label: "Email" },
+                { icon: <Youtube size={22} />, href: "https://youtube.com/@devops-shiv?si=xyz", label: "YouTube" },
               ].map((social, index) => (
                 <motion.a
                   key={index}
