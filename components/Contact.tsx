@@ -95,7 +95,7 @@ export default function Contact() {
           {/* Left Column: Text & Socials */}
           <motion.div variants={itemVariants} className="text-center lg:text-left">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground leading-tight">
-              <span className="text-primary">07.</span> Let&apos;s Build Something <br className="hidden md:block"/>
+              <span className="text-primary">09.</span> Let&apos;s Build Something <br className="hidden md:block"/>
               <span className="text-primary">Extraordinary</span> Together
             </h2>
             

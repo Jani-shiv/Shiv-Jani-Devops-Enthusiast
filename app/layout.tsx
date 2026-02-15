@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SocialConnect from "@/components/SocialConnect";
 import CookieConsent from "@/components/CookieConsent";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +32,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
-        <main className="min-h-screen relative">{children}</main>
-        <Footer />
-        <SocialConnect />
-        <CookieConsent />
+        <SmoothScroll>
+          <Navbar />
+          <main className="min-h-screen relative">{children}</main>
+          <Footer />
+          <SocialConnect />
+          <CookieConsent />
+        </SmoothScroll>
       </body>
     </html>
   );

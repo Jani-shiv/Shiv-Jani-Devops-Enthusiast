@@ -4,8 +4,8 @@ import { motion } from "framer-motion"
 
 const experience = [
   {
-    role: "DevOps Engineer Trainee",
-    company: "Electomac",
+    role: "Linux Administrator",
+    company: "Electromech Cloudtech Pvt.Ltd.",
     period: "2025 - Present",
     description: "Assisting in migration of monolithic applications to microservices. Managing CI/CD pipelines and monitoring production environments.",
     skills: ["Docker", "Linux"],
@@ -30,7 +30,7 @@ export default function Experience() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl font-bold mb-12 text-foreground flex items-center gap-2">
-            <span className="text-primary">04.</span> Experience
+            <span className="text-primary">07.</span> Experience
           </h2>
 
           <div className="relative border-l border-border/50 ml-3 md:ml-6 space-y-12">

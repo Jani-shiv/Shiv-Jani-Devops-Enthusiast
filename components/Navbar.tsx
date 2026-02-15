@@ -9,8 +9,10 @@ const navLinks = [
   { name: "About", href: "#about" },
   { name: "Education", href: "#education" },
   { name: "Skills", href: "#skills" },
-  { name: "Experience", href: "#experience" },
   { name: "Projects", href: "#projects" },
+  { name: "Events", href: "#events" },
+  { name: "Community", href: "#community" },
+  { name: "Experience", href: "#experience" },
   { name: "Content", href: "#content" },
   { name: "Contact", href: "#contact" },
 ]

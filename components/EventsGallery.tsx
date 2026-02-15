@@ -12,7 +12,7 @@ const Typewriter = ({ text, delay = 0, className = "" }: { text: string; delay?:
       let i = 0
       const timer = setInterval(() => {
         if (i < text.length) {
-          setCurrentText((prev) => prev + text.charAt(i))
+          setCurrentText(() => text.slice(0, i + 1))
           i++
         } else {
           clearInterval(timer)
@@ -139,7 +139,7 @@ export default function EventsGallery() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-mono mb-4">
             <Sparkles size={16} />
-            <span>Beyond the Terminal</span>
+            <span>05. Beyond the Terminal</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
             <Typewriter text="Events & Volunteering" delay={500} />
